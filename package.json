@@ -1,0 +1,22 @@
+{
+  "name": "postman-to-axios",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/weicracker/postman-to-axios.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/weicracker/postman-to-axios/issues"
+  },
+  "homepage": "https://github.com/weicracker/postman-to-axios#readme",
+  "dependencies": {
+    "mustache": "^3.0.1"
+  }
+}

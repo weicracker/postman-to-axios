@@ -1,0 +1,462 @@
+{
+	"info": {
+		"_postman_id": "533d355d-52a5-4170-b099-6b5fd3d6b68b",
+		"name": "流程中心",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [{
+			"name": "查询待加入app",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"page\":1,\n\t\"rows\":5\n}"
+				},
+				"url": "10.0.32.59:9090/apps/listReady"
+			},
+			"response": []
+		},
+		{
+			"name": "新增app-批量",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n\t{\n\t\"appId\":\"appId1\",\n\t\"tenantId\":\"tenantId001\"\n\t},\n\t{\n\t\"appId\":\"appId2\",\n\t\"tenantId\":\"tenantId001\"\n\t}\n]"
+				},
+				"url": "10.0.32.59:9090/apps/save",
+				"description": "{\n\t\"appId\":\"appId1\",//必填 appId\n\t\"tenantId\":\"tenantId001\"//必填 ，租户Id，先固定填一个\n\t},"
+			},
+			"response": []
+		},
+		{
+			"name": "查询app",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"page\":1,\n\"rows\":5,\n\"tenantId\":\"tenantId001\",\n\"order\":\"modifiedAsc\"\n\n}"
+				},
+				"url": "10.0.32.59:9090/apps",
+				"description": "{\n\"page\":1,  \n\"rows\":5,\n\"tenantId\":\"tenantId001\",\n\"order\":\"modifiedAsc\"   // 可选，默认modifiedDesc 时间降序，名称排序有点难搞，暂不支持\n\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "删除app",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"url": "localhost:9090/apps/delete/39849c71-7ed2-4535-a15a-3ef7a711027f"
+			},
+			"response": []
+		},
+		{
+			"name": "分级查询processfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",\n\t\"parentId\":null\n}"
+				},
+				"url": "localhost:9090/processFolders/getChildren",
+				"description": "{\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",\n\t\"parentId\":\"xxx\" //可选\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "新增processfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"folderName\":\"folderName001-2\",\n\t\"orderCode\":1,\n\t\"description\":\"description001-2\",\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\"\n\t\n}"
+				},
+				"url": "localhost:9090/processFolders/save",
+				"description": "{\n\t\"folderName\":\"folderName001-2\",\n\t\"orderCode\":1,\n\t\"description\":\"description001-2\",//可选\n\t\"parentId\":\"xxx\",//可选\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\"\n\t\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "删除processfolder",
+			"request": {
+				"method": "DELETE",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"fc6f0d47-2e1a-40a7-bd5d-2b7595b28034\",\n\t\"version\":1\n}"
+				},
+				"url": "localhost:9090/processFolders/delete",
+				"description": "{\n\t\"id\":\"fc6f0d47-2e1a-40a7-bd5d-2b7595b28034\",\n\t\"version\":1 // 乐观锁，删除时要带上\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "更新processfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"29e0d60c-d7bb-41cb-96e4-35167cfc64be\",\n\t\"folderName\":\"folderName001\",\n\t\"orderCode\":1,\n\t\"description\":\"description001\",\n\t\"parentId\":null,\n\t\"version\": 3\n\t\n}"
+				},
+				"url": "localhost:9090/processFolders/update",
+				"description": "{\n\t\"id\":\"29e0d60c-d7bb-41cb-96e4-35167cfc64be\",\n\t\"folderName\":\"folderName001\",\n\t\"orderCode\":1,\n\t\"description\":\"description001\",\n\t\"parentId\":null,\n\t\"version\": 3\n\t// 根据主键更新实体全部字段，不填的属性会被更新为null\n\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "移动processfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"c892395a-2a6d-4084-9b7b-6652020bf348\",\n\t\"parentId\":\"1589a4f3-0674-4fd2-9573-583c662d7331\"\n}"
+				},
+				"url": "localhost:9090/processFolders/move",
+				"description": "{\n\t\"id\":\"c892395a-2a6d-4084-9b7b-6652020bf348\",\n\t\"parentId\":\"1589a4f3-0674-4fd2-9573-583c662d7331\" // 可选，为空 表示没有父节点\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "查询model",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"page\":1,\n\t\"rows\":10,\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",\n\t\"name\":\"name\",\n\t\"modelKey\":\"Key\",\n\t\"sort\":\"modefiedDesc\",\n\t\"startDate\":\"2019-04-04\",\n\t\"endDate\":\"2019-08-08\"\n}"
+				},
+				"url": "localhost:9090/models",
+				"description": "{\n\t\"page\":1,\n\t\"rows\":10,\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",\n\t\"folderId\":\"xxx\",//分类，可选\n\t\"name\":\"name\",// 模糊匹配\n\t\"modelKey\":\"Key\",// 模糊匹配\n\t\"sort\":\"modefiedDesc\",// 排序四种modefiedDesc最后修改时间降序，modefiedAsc最后修改时间升序，nameDesc名称降序，nameAsc名称升序\n\t\"startDate\":\"2019-04-04\",// 可选，创建时间起始\n\t\"endDate\":\"2019-08-08\"//可选，创建时间结束\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "添加model",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"name001\",\n\t\"modelKey\":\"key001\",\n\t\"appId\":\"b04b5b33-160b-4f29-a0f8-a3db473ca5ac\"\n}"
+				},
+				"url": "10.0.32.59:9090/models/save",
+				"description": "{\n\t\"name\":\"name001\",\n\t\"modelKey\":\"key001\",\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",\n\t\"folderId\":\"xxx\" //分类 可选\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "设计model",
+			"request": {
+				"method": "GET",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"name001\",\n\t\"modelKey\":\"key001\",\n\t\"appId\":\"appId001\",\n\t\"folderId\":\"29e0d60c-d7bb-41cb-96e4-35167cfc64be\"\n}"
+				},
+				"url": "10.0.32.59:9090/models/design/66fa5f2d-aea2-11e9-b162-e670aacc0d67",
+				"description": "响应设计模型页面"
+			},
+			"response": []
+		},
+		{
+			"name": "更新model",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\":\"formName001-1\",\n\t\"id\":\"7f3a55e3-0f86-4dcd-9567-775dbf7f4018\",\n\t\"version\":1\n}"
+				},
+				"url": "localhost:9090/models/update"
+			},
+			"response": []
+		},
+		{
+			"name": "删除model",
+			"request": {
+				"method": "DELETE",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"7c9f2cb4-a215-11e9-be4f-4439c4523b5e\",\n\t\"version\":1\n}"
+				},
+				"url": "localhost:9090/models/delete"
+			},
+			"response": []
+		},
+		{
+			"name": "发布model",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {},
+				"url": "10.0.32.59:9090/models/deploy/66fa5f2d-aea2-11e9-b162-e670aacc0d67"
+			},
+			"response": []
+		},
+		{
+			"name": "查询process-definitions-发布管理",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"appId\":\"b04b5b33-160b-4f29-a0f8-a3db473ca5ac\",\n\t\n\t\"suspended\":false,\n\t\"sort\":\"version\",\n\t\"order\":\"desc\",\n\t\"page\":1,\n\t\"rows\":10\n}"
+				},
+				"url": "10.0.32.59:9090/definitions",
+				"description": "{\n\t\"key\":\"key001\",// 必填,model的key\n\t\"latest\":false,// 是否只取最新\n\t\"suspended\":false,//是否挂起\n\t\"sort\":\"version\",//根据版本排序\n\t\"order\":\"desc\",//desc降序，asc表示升序\n\t\"page\":1,//\n\t\"rows\":10//\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "挂起process-definitions",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "localhost:9090/definitions/key001:11:77b1b710-ae76-11e9-b4c8-e670aacc0d67/suspend",
+				"description": "{\n\t\"key\":\"key001\",// 必填,model的key\n\t\"latest\":false,// 是否只取最新\n\t\"suspended\":false,//是否挂起\n\t\"sort\":\"version\",//根据版本排序\n\t\"order\":\"desc\",//desc降序，asc表示升序\n\t\"page\":1,//\n\t\"rows\":10//\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "激活process-definitions",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "localhost:9090/definitions/key001:11:77b1b710-ae76-11e9-b4c8-e670aacc0d67/activate",
+				"description": "{\n\t\"key\":\"key001\",// 必填,model的key\n\t\"latest\":false,// 是否只取最新\n\t\"suspended\":false,//是否挂起\n\t\"sort\":\"version\",//根据版本排序\n\t\"order\":\"desc\",//desc降序，asc表示升序\n\t\"page\":1,//\n\t\"rows\":10//\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "删除process-definitions",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "localhost:9090/definitions/key001:11:77b1b710-ae76-11e9-b4c8-e670aacc0d67",
+				"description": "{\n\t\"key\":\"key001\",// 必填,model的key\n\t\"latest\":false,// 是否只取最新\n\t\"suspended\":false,//是否挂起\n\t\"sort\":\"version\",//根据版本排序\n\t\"order\":\"desc\",//desc降序，asc表示升序\n\t\"page\":1,//\n\t\"rows\":10//\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "启动process-definitions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": "10.0.32.59:9090/definitions/key001:11:d080131b-aea2-11e9-b4c8-e670aacc0d67/start",
+				"description": "{\n\t\"key\":\"key001\",// 必填,model的key\n\t\"latest\":false,// 是否只取最新\n\t\"suspended\":false,//是否挂起\n\t\"sort\":\"version\",//根据版本排序\n\t\"order\":\"desc\",//desc降序，asc表示升序\n\t\"page\":1,//\n\t\"rows\":10//\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "新增formfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"folderName\":\"folderName001-1\",\n\t\"orderCode\":1,\n\t\"description\":\"description001-1\",\n\t\"parentId\":null,\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\"\n\t\n}"
+				},
+				"url": "localhost:9090/formFolders/save"
+			},
+			"response": []
+		},
+		{
+			"name": "移动formfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"c892395a-2a6d-4084-9b7b-6652020bf348\",\n\t\"parentId\":\"1589a4f3-0674-4fd2-9573-583c662d7331\"\n}"
+				},
+				"url": "localhost:9090/processFolders/move",
+				"description": "{\n\t\"id\":\"c892395a-2a6d-4084-9b7b-6652020bf348\",\n\t\"parentId\":\"1589a4f3-0674-4fd2-9573-583c662d7331\" // 可选，为空 表示没有父节点\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "更新formfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"0e54755e-8ceb-4bff-a944-0dff262a55a3\",\n\t\"folderName\":\"folderName001\",\n\t\"orderCode\":1,\n\t\"description\":\"description001\",\n\t\"parentId\":null,\n\t\"version\": 3\n\t\n}"
+				},
+				"url": "localhost:9090/formFolders/update"
+			},
+			"response": []
+		},
+		{
+			"name": "分级查询formfolder",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",\n\t\"parentId\":null\n}"
+				},
+				"url": "localhost:9090/formFolders/getChildren"
+			},
+			"response": []
+		},
+		{
+			"name": "删除formfolder",
+			"request": {
+				"method": "DELETE",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"0e54755e-8ceb-4bff-a944-0dff262a55a3\",\n\t\"version\":5\n}"
+				},
+				"url": "localhost:9090/formFolders/delete"
+			},
+			"response": []
+		},
+		{
+			"name": "新增bizform",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"formName\":\"formName001\",\n\t\"formCode\":\"formCode001\",\n\t\"isProxy\":true,\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\"\n}"
+				},
+				"url": "localhost:9090/bizforms/save"
+			},
+			"response": []
+		},
+		{
+			"name": "更新bizform",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {},
+				"url": "localhost:9090/bizforms/update"
+			},
+			"response": []
+		},
+		{
+			"name": "查询bizform",
+			"request": {
+				"method": "POST",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"page\":1,\n\t\"rows\":10,\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",\n\t\"folderId\":\"xxxx\",\n\t\"formName\":\"001\",\n\t\"formCode\":\"001\",\n\t\"sort\":\"modefiedDesc\"\n\t\n\t\n}"
+				},
+				"url": "localhost:9090/bizforms",
+				"description": "{\n\t\"page\":1,\n\t\"rows\":10,\n\t\"appId\":\"6b92fd03-3b63-4c64-8a79-4d6b20621d49\",//必填\n\t\"folderId\":\"xxxx\",//可选，分类\n\t\"formName\":\"001\",//可选，模糊匹配\n\t\"formCode\":\"001\",//可选，模糊匹配\n\t\"sort\":\"modefiedDesc\",//可选, 排序四种modefiedDesc最后修改时间降序，modefiedAsc最后修改时间升序，nameDesc名称降序，nameAsc名称升序\n\t\n}"
+			},
+			"response": []
+		},
+		{
+			"name": "删除bizform",
+			"request": {
+				"method": "DELETE",
+				"header": [{
+					"key": "Content-Type",
+					"value": "application/json"
+				}],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\":\"4050d8a7-1e48-4f51-880c-f369161c0df3\",\n\t\"version\":2\n}"
+				},
+				"url": "localhost:9090/bizforms/delete"
+			},
+			"response": []
+		}
+	]
+}
